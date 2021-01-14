@@ -7,10 +7,11 @@ const converter = require('libreoffice-convert');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 require('dotenv').config();
+
 var transporter = nodemailer.createTransport({
   service:"gmail",
   auth: {
-    user: 'vojodjukanovic@gmail.com',
+    user: 'nodekurstest@gmail.com',
     pass: process.env.PASSWORD
   }
 
@@ -94,27 +95,42 @@ app.post("/sendMail", function(req,res){
    //console.log(req.body.email);
     let mailTo = req.body.email;
     mailOptions = {
-      from: 'vojodjukanovic@gmail.com',
+      from: 'nodekurstest@gmail.com',
       to: mailTo,
       subject: `File from Word-Pdf converter`,
       text: 'Here is your file',
       attachments: [
         {   // utf-8 string as an attachment
-            filename: currentFileName,
+            filename: `${currentFileName}.pdf`,
             path: currentFile
         }
       ],
-    }
+    };
+    //console.log(currentFile)
 
-
-    
-    let numOfConverts=parseInt(fs.readFileSync("./converted/number.txt").toString());
-    res.render("home.hbs",{
-      numOfConverted:numOfConverts,
-      originalName: currentFileOriginal,
-      downloadFile:currentFile,
-      download:true,
-      mailSent: "Mail succesfuly sent to",
+    transporter.sendMail(mailOptions,function(error,info){
+      if (error) {
+        //console.log(error);
+        let numOfConverts=parseInt(fs.readFileSync("./converted/number.txt").toString());
+         res.render("home.hbs",{
+          numOfConverted:numOfConverts,
+          originalName: currentFileOriginal,
+          downloadFile:currentFile,
+          download:true,
+          mailSent: error,
+        })
+        
+      } else {
+        //console.log('Email sent: ' + info.response);
+        let numOfConverts=parseInt(fs.readFileSync("./converted/number.txt").toString());
+        res.render("home.hbs",{
+          numOfConverted:numOfConverts,
+          originalName: currentFileOriginal,
+          downloadFile:currentFile,
+          download:true,
+          mailSent: `Mail sent to: ${mailTo}` ,
+        })
+      }
     })
   }else{
       let numOfConverts=parseInt(fs.readFileSync("./converted/number.txt").toString())
