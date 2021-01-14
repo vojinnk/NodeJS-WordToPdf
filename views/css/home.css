@@ -1,0 +1,21 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    position: relative;
+}
+.downloader{
+    position: relative;
+    left: 50%;
+    border-radius: 15px;
+    margin-top: 10vh;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background-color:rgb(236, 68, 68);
+    text-align: center;
+}
+.green{
+    background-color: green;
+    cursor: pointer;
+}

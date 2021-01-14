@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word to PDF Converter</title>
+     <link rel="stylesheet" href="./views/css/home.css">
+</head>
+<body>
+    <div class="downloader">
+          <h2>Files converted using this app: {{numOfConverted}}</h2>
+        <form name="convert" class="fileupload" action="/upload" method="post" enctype="multipart/form-data">
+            <h1>Upload File Here:</h1>
+            <input type="file" name="upfile" value="">
+            <input type="submit" />
+          </form>
+          
+          {{#if download}}
+              <a href="{{downloadFile}}" download=""><button class="green">Download</button></a>
+              <p>Conversion of {{originalName}} sucesfull!!!</p>
+              <h4>Send converted file to mail?</h4>
+            <form action="/sendMail" class="sendMail" method="post" enctype="multipart/form-data">
+              <label for="mail">Email:</label>
+              <input name="email" id="mail" type="email">
+              <button type="submit">Send!</button>
+            </form>
+          {{else}}
+            <button>Download</button>
+          {{/if}}
+          <p>{{mistake}}</p>
+          <p>{{mailSent}}</p>
+    </div>  
+</body>
+</html>
